@@ -1,0 +1,86 @@
+import { Shirt, Gift, PenTool, Sparkles, FileText, Sticker, Hash, Frame, Building2 } from 'lucide-react'
+import type { Service } from '@/types'
+import { kebbyImage } from '@/lib/images'
+
+export const services: Service[] = [
+  {
+    id: 'football-jersey',
+    title: 'Football Jersey Printing',
+    description: 'Match-ready football kits with vivid, sweat-proof sublimation printing.',
+    image: kebbyImage('WhatsApp Image 2026-07-13 at 19.38.37 (2).jpeg'),
+    icon: Shirt,
+    category: 'jerseys',
+  },
+  {
+    id: 'custom-tshirt',
+    title: 'Custom T-Shirt Printing',
+    description: 'Premium cotton tees printed with your exact vision, any quantity.',
+    image: kebbyImage('WhatsApp Image 2026-07-13 at 19.05.12 (2).jpeg'),
+    icon: Shirt,
+    category: 'tshirts',
+  },
+  {
+    id: 'name-number',
+    title: 'Name & Number Printing',
+    description: 'Crisp heat-transfer names and numbers for any jersey or kit.',
+    image: kebbyImage('WhatsApp Image 2026-07-13 at 19.38.40 (1).jpeg'),
+    icon: Hash,
+    category: 'jerseys',
+  },
+  {
+    id: 'wall-decorations',
+    title: 'Wall Decorations',
+    description: 'Statement wall art crafted to transform any interior space.',
+    image: kebbyImage('WhatsApp Image 2026-07-13 at 19.05.09 (1).jpeg'),
+    icon: Frame,
+    category: 'wood',
+  },
+  {
+    id: 'personalized-gifts',
+    title: 'Personalized Gifts',
+    description: 'One-of-a-kind gifts engraved and printed with personal touches.',
+    image: kebbyImage('WhatsApp Image 2026-07-13 at 19.38.41 (4).jpeg'),
+    icon: Gift,
+    category: 'wood',
+  },
+  {
+    id: 'logo-design',
+    title: 'Logo Design',
+    description: 'Distinctive, memorable logos that define your brand identity.',
+    image: kebbyImage('WhatsApp Image 2026-07-13 at 19.05.13 (2).jpeg'),
+    icon: PenTool,
+    category: 'logos',
+  },
+  {
+    id: 'branding',
+    title: 'Branding',
+    description: 'Full brand systems — color, type and voice, built to last.',
+    image: kebbyImage('WhatsApp Image 2026-07-13 at 19.05.13 (1).jpeg'),
+    icon: Sparkles,
+    category: 'branding',
+  },
+  {
+    id: 'posters',
+    title: 'Posters',
+    description: 'High-resolution poster printing for campaigns and promotions.',
+    image: kebbyImage('WhatsApp Image 2026-07-13 at 19.05.12 (4).jpeg'),
+    icon: FileText,
+    category: 'branding',
+  },
+  {
+    id: 'stickers',
+    title: 'Stickers',
+    description: 'Custom die-cut stickers with vibrant, weatherproof finishes.',
+    image: kebbyImage('WhatsApp Image 2026-07-13 at 19.05.10 (2).jpeg'),
+    icon: Sticker,
+    category: 'branding',
+  },
+  {
+    id: 'company-branding',
+    title: 'Company Branding',
+    description: 'Complete corporate identity packages for growing businesses.',
+    image: kebbyImage('WhatsApp Image 2026-07-13 at 19.05.14 (1).jpeg'),
+    icon: Building2,
+    category: 'branding',
+  },
+]
