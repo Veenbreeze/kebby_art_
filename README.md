@@ -1,18 +1,17 @@
 # Kebby Arts
 
 Premium, award-style marketing site for **Kebby Arts** — a creative printing & branding studio
-based in Tanzania. Built with React 19, TypeScript, Tailwind CSS v4, Framer Motion, GSAP, Lenis
-smooth scroll and a React Three Fiber 3D hero showcase.
+based in Tanzania. Built with React 19, TypeScript, Tailwind CSS v4, Framer Motion, GSAP and Lenis
+smooth scroll.
 
 ## Tech Stack
 
 - **React 19 + TypeScript + Vite 6**
 - **Tailwind CSS v4** (CSS-first theme via `@theme` in `src/index.css`)
-- **Framer Motion** — scroll reveals, hover/tilt interactions, page micro-animations
+- **Framer Motion** — scroll reveals, hover/tilt interactions, page micro-animations, hero photo
+  mosaic
 - **GSAP** — ticker driving Lenis smooth scroll
 - **Lenis** — inertia smooth scrolling
-- **Three.js / React Three Fiber / Drei** — animated hero product carousel (jersey, t-shirt,
-  shoe, wooden name board), lazy-loaded and code-split from the main bundle
 - **Embla Carousel** — testimonials slider
 - **React CountUp** — animated statistics
 - **React Hook Form + Zod** — validated contact form
@@ -62,14 +61,14 @@ WhatsApp instead — it will not crash the app.
 src/
   components/
     layout/      Navbar, Footer
-    three/       R3F models (Jersey, T-Shirt, Shoe, Wood Board) + HeroScene canvas
-    ui/          Shared UI primitives (cards, buttons, backgrounds, cursor, etc.)
+    ui/          Shared UI primitives (cards, buttons, backgrounds, hero mosaic, etc.)
   data/          Static content: services, portfolio, testimonials, FAQ, stats, nav
   hooks/         useLenis, useMousePosition
-  lib/           cn, image URL helpers, garment geometry, zod schema
+  lib/           cn, image URL helpers, zod schema
   sections/      One component per homepage section
   types/         Shared TypeScript types
 public/
+  kebby/         Real product/work photography, referenced via src/lib/images.ts#kebbyImage
   robots.txt, sitemap.xml, favicon.svg
 ```
 
@@ -79,22 +78,19 @@ public/
   cards — all defined as Tailwind v4 theme tokens in `src/index.css`.
 - **Typography**: Space Grotesk (display), Inter (body), Bebas Neue (available for large numerals),
   loaded via Google Fonts in `index.html`.
-- **3D Hero Showcase**: the four products are stylized, procedurally-built geometry (not
-  photorealistic GLTF scans) so the scene stays dependency-free and loads instantly. Swap in real
-  `.glb` models under `src/components/three/` if you have professional 3D assets.
-- **Images**: every service/portfolio/avatar image is a placeholder from Lorem Picsum /
-  Pravatar (seeded, so they stay consistent across reloads). Replace the URLs in
-  `src/data/*.ts` and `src/lib/images.ts` with real product photography before launch.
-- **Instagram**: the handle/link in `src/data/nav.ts` is a placeholder (`@kebbyarts`) — update it
-  once the real handle is confirmed.
+- **Hero**: a cycling 2x3 photo mosaic (`src/components/ui/HeroSlideshow.tsx`) built from real
+  Kebby Arts work photos in `public/kebby`, each cell cross-fading independently.
+- **Images**: portfolio, services and hero images are real work photography from `public/kebby`
+  (force-cropped to a uniform 810x1080), except the "Shoes" portfolio category and a few services
+  with no photographed work yet, which still use seeded Lorem Picsum placeholders — swap those in
+  `src/data/portfolio.ts` / `src/data/services.ts` once real photos exist.
 
 ## Performance
 
-- The Three.js hero scene is lazy-loaded (`React.lazy` + `Suspense`) and split into its own chunk
-  so it never blocks first paint of the text/CTA content.
-- `vite.config.ts` manually chunks `three`/`@react-three/*` and `framer-motion`/`gsap` separately
-  from the main bundle.
-- All images use `loading="lazy"`.
+- All images use `loading="lazy"` (except the eagerly-loaded hero mosaic).
+- `vite.config.ts` manually chunks `framer-motion`/`gsap` separately from the main bundle.
+- Real photos in `public/kebby` are pre-compressed and uniformly sized; `vercel.json` sets
+  long-lived cache headers for `/assets` and `/kebby`.
 
 ## SEO
 
@@ -103,10 +99,44 @@ public/
 - `public/robots.txt` and `public/sitemap.xml` are included — update the sitemap if you add real
   routes.
 
+## Deployment (Vercel)
+
+The project is a static Vite build with zero server-side code, deployed via `vercel.json`
+(`framework: vite`, `outputDirectory: dist`).
+
+## CI/CD
+
+`.github/workflows/ci-cd.yml` runs on every push/PR against `main`:
+
+1. **`build`** — `npm ci`, `npm run lint`, `npm run build` (type-checks + builds). Runs on every
+   push and pull request; gates the deploy jobs below.
+2. **`deploy-preview`** — on pull requests only, once `build` passes: builds and deploys a Vercel
+   preview via the Vercel CLI, then comments the preview URL on the PR.
+3. **`deploy-production`** — on pushes to `main` only, once `build` passes: builds and deploys to
+   production via the Vercel CLI.
+
+### One-time setup
+
+1. Push this repo to GitHub.
+2. Create a Vercel project from it (`vercel link` locally, or import it in the Vercel dashboard —
+   either way, do **not** also enable Vercel's own GitHub integration/auto-deploy on the same
+   repo, since it would deploy in parallel with this workflow and race it).
+3. Generate a token at [vercel.com/account/tokens](https://vercel.com/account/tokens).
+4. Get your org/project IDs — after `vercel link`, they're in `.vercel/project.json`.
+5. Add three repository secrets under **Settings → Secrets and variables → Actions**:
+   - `VERCEL_TOKEN`
+   - `VERCEL_ORG_ID`
+   - `VERCEL_PROJECT_ID`
+6. Add the EmailJS variables from `.env.example` as **environment variables** on the Vercel project
+   itself (Project Settings → Environment Variables), not as GitHub secrets — the Vercel build
+   step reads them from there via `vercel pull`.
+
 ## Before Going Live
 
-1. Replace placeholder images with real product photography.
-2. Confirm the Instagram handle and update `src/data/nav.ts`.
-3. Set up EmailJS (or swap in your preferred form backend) and add the `.env` values.
-4. Update the canonical domain in `index.html`, `public/robots.txt` and `public/sitemap.xml` if
+1. Fill in the still-placeholder portfolio/service entries (Shoes category, a few services) with
+   real photography once available.
+2. Set up EmailJS (or swap in your preferred form backend) and add the Vercel environment
+   variables.
+3. Update the canonical domain in `index.html`, `public/robots.txt` and `public/sitemap.xml` if
    `kebbyarts.com` is not the final domain.
+4. Complete the CI/CD one-time setup above so pushes to `main` deploy automatically.
