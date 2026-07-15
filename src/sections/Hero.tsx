@@ -11,7 +11,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative flex min-h-screen items-center overflow-hidden bg-gradient-to-br from-bg via-bg-secondary to-bg pt-28 lg:pt-20"
+      className="relative flex min-h-screen items-center overflow-hidden bg-gradient-to-br from-[#0f172a] via-red-hot/50 to-[#0f172a] pt-28 lg:pt-20"
     >
       <GlowBackground variant="hero" vignette={false} />
       <FloatingParticles count={30} />
@@ -56,12 +56,12 @@ export default function Hero() {
           >
             <MagneticButton
               href="#portfolio"
-              className="bg-gradient-to-r from-orange to-red-hot text-white shadow-xl shadow-orange/25 hover:shadow-orange/40"
+              className="bg-gradient-to-r from-orange to-red-hot text-white shadow-xl shadow-orange/25 hover:shadow-orange-light/40"
             >
               View Portfolio
               <ArrowRight size={16} />
             </MagneticButton>
-            <MagneticButton href="#contact" className="glass text-white hover:bg-white/10">
+            <MagneticButton href="#contact" className="glass text-white hover:bg-orange/10">
               Get Quote
             </MagneticButton>
             <MagneticButton
@@ -98,7 +98,7 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, delay: 0.3 }}
-          className="relative h-[420px] sm:h-[520px] lg:h-[620px]"
+          className="relative mx-auto h-[240px] w-full max-w-[380px] sm:h-[270px] sm:max-w-[440px] md:h-[300px] md:max-w-[520px] lg:h-[330px] lg:max-w-[620px] xl:h-[360px] xl:max-w-[720px]"
         >
           <HeroSlideshow />
         </motion.div>
