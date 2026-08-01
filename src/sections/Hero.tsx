@@ -1,20 +1,24 @@
+import { lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Sparkles } from 'lucide-react'
 import { FaWhatsapp } from 'react-icons/fa'
-import GlowBackground from '@/components/ui/GlowBackground'
-import FloatingParticles from '@/components/ui/FloatingParticles'
 import MagneticButton from '@/components/ui/MagneticButton'
 import HeroSlideshow from '@/components/ui/HeroSlideshow'
 import { businessInfo } from '@/data/nav'
+
+// The WebGL scene is intentionally split out of the first UI bundle.
+const CinematicSky = lazy(() => import('@/components/ui/CinematicSky'))
 
 export default function Hero() {
   return (
     <section
       id="home"
-      className="relative flex min-h-screen items-center overflow-hidden bg-gradient-to-br from-[#0f172a] via-red-hot/50 to-[#0f172a] pt-28 lg:pt-20"
+      className="relative flex min-h-screen items-center overflow-hidden bg-[#0d4c8d] pt-28 lg:pt-20"
     >
-      <GlowBackground variant="hero" vignette={false} />
-      <FloatingParticles count={30} />
+      <Suspense fallback={<div className="absolute inset-0 z-0 bg-[#0d4c8d]" />}>
+        <CinematicSky />
+      </Suspense>
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-black/30" aria-hidden="true" />
 
       <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:grid-cols-2 lg:gap-8 lg:px-10">
         <div>
@@ -35,7 +39,7 @@ export default function Hero() {
             className="mt-6 font-display text-5xl font-bold leading-[1.05] text-white sm:text-6xl lg:text-7xl"
           >
             Turning Ideas Into{' '}
-            <span className="text-gradient gradient-animated">Masterpieces</span>
+            <span className="text-orange-light">Masterpieces</span>
           </motion.h1>
 
           <motion.p
@@ -45,7 +49,7 @@ export default function Hero() {
             className="mt-6 max-w-lg text-lg leading-relaxed text-gray-soft"
           >
             We create premium jerseys, custom apparel, branding, wooden artwork and personalized
-            products — crafted in Tanzania, built to impress.
+            products crafted in Tanzania, built to impress.
           </motion.p>
 
           <motion.div
@@ -56,7 +60,7 @@ export default function Hero() {
           >
             <MagneticButton
               href="#portfolio"
-              className="bg-gradient-to-r from-orange to-red-hot text-white shadow-xl shadow-orange/25 hover:shadow-orange-light/40"
+              className="bg-orange text-white shadow-xl shadow-orange/25 hover:bg-orange-light hover:shadow-orange-light/40"
             >
               View Portfolio
               <ArrowRight size={16} />
@@ -111,7 +115,7 @@ export default function Hero() {
         className="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-gray-soft sm:flex"
       >
         <span className="text-[10px] uppercase tracking-[0.3em]">Scroll</span>
-        <div className="h-10 w-[1.5px] animate-pulse-glow bg-gradient-to-b from-orange to-transparent" />
+        <div className="h-10 w-[1.5px] animate-pulse-glow bg-orange/70" />
       </motion.div>
     </section>
   )
